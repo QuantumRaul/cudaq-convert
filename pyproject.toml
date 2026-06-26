@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cudaq-contrib"
+version = "0.1.0"
+description = "OpenQASM 2.0/3.0 and Qiskit interoperability for CUDA-Q, distributed independently of the core repo."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Raul Martinez", email = "raul.martinez@itecam.com" }]
+keywords = ["cuda-quantum", "cudaq", "openqasm", "qasm", "qiskit", "quantum"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "cuda-quantum",
+]
+
+[project.optional-dependencies]
+# Qiskit is only needed for `from_qiskit`; the OpenQASM path is dependency-free.
+qiskit = ["qiskit>=1.0"]
+test = ["pytest", "numpy", "qiskit>=1.0"]
+
+[project.urls]
+Homepage = "https://github.com/QuantumRaul/cudaq-contrib"
+Issues = "https://github.com/QuantumRaul/cudaq-contrib/issues"
+
+[tool.setuptools]
+packages = ["cudaq_contrib"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
