@@ -1,25 +1,25 @@
-# cudaq-contrib
+# cudaq-convert
 
 Interoperability helpers for [CUDA-Q](https://github.com/NVIDIA/cuda-quantum):
 convert **OpenQASM 2.0 / 3.0** and **Qiskit** circuits into CUDA-Q kernels.
 
 This package is developed and released **independently** of the core CUDA-Q
-repository. It takes a dependency on `cuda-quantum` and installs on top of it,
+repository. It takes a dependency on `cudaq` and installs on top of it,
 so framework integrations can evolve on their own cadence without coupling to
 CUDA-Q's release cycle.
 
 ## Installation
 
 ```bash
-pip install cudaq-contrib            # OpenQASM support (no Qiskit needed)
-pip install cudaq-contrib[qiskit]    # adds Qiskit conversion
+pip install cudaq-convert            # OpenQASM support (no Qiskit needed)
+pip install cudaq-convert[qiskit]    # adds Qiskit conversion
 ```
 
 ## Usage
 
 ```python
 import cudaq
-from cudaq_contrib import from_qasm, from_qasm_str, from_qiskit
+from cudaq_convert import from_qasm, from_qasm_str, from_qiskit
 
 # OpenQASM 2.0 / 3.0 — native parser, no Qiskit dependency
 kernel = from_qasm_str("""
