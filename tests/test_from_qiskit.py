@@ -13,7 +13,7 @@ import pytest
 import numpy as np
 
 import cudaq
-import cudaq_contrib
+import cudaq_convert
 
 # Skip all tests if `qiskit` is not installed
 qiskit = pytest.importorskip("qiskit")
@@ -34,14 +34,14 @@ from qiskit.circuit.library import (
 
 
 class TestFromQiskit:
-    """Tests for the `cudaq_contrib.from_qiskit` helper."""
+    """Tests for the `cudaq_convert.from_qiskit` helper."""
 
     def test_single_qubit_h_gate(self):
         """Test conversion of a single H gate."""
         qc = QuantumCircuit(1)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H gate creates superposition, expect roughly 50/50 distribution
@@ -52,7 +52,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.x(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1'] == 1000
@@ -62,7 +62,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.y(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1'] == 1000
@@ -74,7 +74,7 @@ class TestFromQiskit:
         qc.z(0)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H-Z-H = X, so result should be |1>
@@ -88,7 +88,7 @@ class TestFromQiskit:
         qc.s(0)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H-S-S-H = H-Z-H = X, result should be |1>
@@ -99,7 +99,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.t(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # T on |0> should give |0>
@@ -113,7 +113,7 @@ class TestFromQiskit:
         qc.sdg(0)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H-`Sdg`-`Sdg`-H = H-Z-H = X, result should be |1>
@@ -124,7 +124,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.tdg(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Tdg on |0> should give |0>
@@ -136,7 +136,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.cx(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # |10> -> |11> after CNOT
@@ -148,7 +148,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.cy(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Control qubit is 1, so Y is applied to target
@@ -161,7 +161,7 @@ class TestFromQiskit:
         qc.h(1)
         qc.cz(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CZ on |++> creates entanglement
@@ -173,7 +173,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.ch(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Control is 1, so H is applied to target creating superposition
@@ -185,7 +185,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.swap(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # |10> swapped to |01>
@@ -196,7 +196,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.rx(np.pi, 0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RX(pi) on |0> gives |1>
@@ -207,7 +207,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.ry(np.pi, 0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RY(pi) on |0> gives |1>
@@ -220,7 +220,7 @@ class TestFromQiskit:
         qc.rz(np.pi, 0)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H-`RZ(pi)`-H = X, result should be |1>
@@ -232,7 +232,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.crx(np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Control is 1, RX(pi) applied to target
@@ -244,7 +244,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.cry(np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Control is 1, RY(pi) applied to target
@@ -258,7 +258,7 @@ class TestFromQiskit:
         qc.crz(np.pi, 0, 1)
         qc.h(1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Control is 1, H-`RZ(pi)`-H = X applied to target
@@ -269,7 +269,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.u(np.pi, 0, np.pi, 0)  # U3(pi, 0, pi) = X
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1'] == 1000
@@ -281,7 +281,7 @@ class TestFromQiskit:
         qc.p(np.pi, 0)
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # H-P(pi)-H should flip the qubit
@@ -293,7 +293,7 @@ class TestFromQiskit:
         qc.sx(0)
         qc.sx(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # SX^2 = X, result should be |1>
@@ -304,7 +304,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.id(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['0'] == 1000
@@ -316,7 +316,7 @@ class TestFromQiskit:
         qc.barrier()
         qc.cx(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Bell state
@@ -328,7 +328,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.measure(0, 0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1'] == 1000
@@ -339,7 +339,7 @@ class TestFromQiskit:
         qc.h(0)
         qc.cx(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Bell state should have only |00> and |11>
@@ -355,7 +355,7 @@ class TestFromQiskit:
         qc.cx(0, 1)
         qc.cx(1, 2)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # GHZ state should have only |000> and |111>
@@ -369,7 +369,7 @@ class TestFromQiskit:
         qc.x(1)
         qc.ccx(0, 1, 2)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Both controls are 1, so target flips: |110> -> |111>
@@ -382,7 +382,7 @@ class TestFromQiskit:
         qc.h(1)
         qc.rxx(np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RXX creates entanglement
@@ -395,7 +395,7 @@ class TestFromQiskit:
         qc.h(1)
         qc.rzz(np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RZZ creates entanglement
@@ -407,7 +407,7 @@ class TestFromQiskit:
         qc.sx(0)
         qc.sxdg(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # SX followed by SXdg should return to |0>
@@ -424,7 +424,7 @@ class TestFromQiskit:
         qc.append(U1Gate(np.pi), [0])
         qc.h(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # U1(π) applies a Z phase, so H·U1(π)·H = X
@@ -436,7 +436,7 @@ class TestFromQiskit:
         qc.append(U2Gate(0, np.pi), [0])
         qc.append(U2Gate(0, np.pi), [0])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # U2(0, π) = H, applied twice returns |0>
@@ -447,7 +447,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(1)
         qc.r(np.pi, 0, 0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # R(π, 0) = -i·X up to global phase, so |0> → |1>
@@ -466,7 +466,7 @@ class TestFromQiskit:
         qc.cs(0, 1)
         qc.h(1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CS² = CZ, so H·CS·CS·H on |1+> yields |11>
@@ -479,7 +479,7 @@ class TestFromQiskit:
         qc.cs(0, 1)
         qc.csdg(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CS · CS† = I, so we stay at |10>
@@ -492,7 +492,7 @@ class TestFromQiskit:
         qc.csx(0, 1)
         qc.csx(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CSX² = CX, so |10> → |11>
@@ -510,7 +510,7 @@ class TestFromQiskit:
         qc.cp(np.pi, 0, 1)
         qc.h(1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CP(π) = CZ, so H·CP(π)·H on |1+> yields |11>
@@ -524,7 +524,7 @@ class TestFromQiskit:
         qc.append(CU1Gate(np.pi), [0, 1])
         qc.h(1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CU1(π) = CZ, same behavior as CPhase(π)
@@ -536,7 +536,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.append(CU3Gate(np.pi, 0, np.pi), [0, 1])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CU3(π, 0, π) acts as CX on control=1
@@ -548,7 +548,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.cu(np.pi, 0, np.pi, 0, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CU(π, 0, π, 0) reduces to CX
@@ -564,7 +564,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.iswap(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # `iswap` on |10> = i|01>, sampling ignores phase
@@ -576,7 +576,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.dcx(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # DCX = CX(0,1)·CX(1,0): |10> → |11> → |01>
@@ -587,7 +587,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(2)
         qc.ecr(0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # ECR|00> = (1/√2)|q0=1,q1=0> - (i/√2)|q0=1,q1=1>.
@@ -606,7 +606,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(2)
         qc.ryy(2 * np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RYY(2π) = -I, |00> stays |00> up to a global sign
@@ -617,7 +617,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(2)
         qc.rzx(np.pi, 0, 1)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RZX(π)|00> = -i·(Z_0⊗X_1)|00> = -i|0,1>
@@ -629,7 +629,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.append(XXPlusYYGate(np.pi, 0), [0, 1])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # At θ=π the gate swaps |01> ↔ |10> in Qiskit's basis;
@@ -641,7 +641,7 @@ class TestFromQiskit:
         qc = QuantumCircuit(2)
         qc.append(XXMinusYYGate(np.pi, 0), [0, 1])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # At θ=π the gate swaps |00> ↔ |11>; from |00> we land on |11>.
@@ -658,7 +658,7 @@ class TestFromQiskit:
         qc.x(1)
         qc.rccx(0, 1, 2)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # RCCX flips the target when both controls are 1, up to a phase
@@ -671,7 +671,7 @@ class TestFromQiskit:
         qc.x(1)
         qc.ccz(0, 1, 2)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # CCZ only adds a phase to |111>; the target stays |0>
@@ -685,7 +685,7 @@ class TestFromQiskit:
         qc.x(2)
         qc.append(C3XGate(), [0, 1, 2, 3])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1111'] == 1000
@@ -699,7 +699,7 @@ class TestFromQiskit:
         qc.x(3)
         qc.append(C4XGate(), [0, 1, 2, 3, 4])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['11111'] == 1000
@@ -711,7 +711,7 @@ class TestFromQiskit:
             qc.x(i)
         qc.mcx([0, 1, 2, 3, 4], 5)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['111111'] == 1000
@@ -726,7 +726,7 @@ class TestFromQiskit:
         qc.mcp(np.pi, [0, 1, 2], 3)
         qc.h(3)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # With all controls = 1, `mcp(π)` flips the phase of the |1> component
@@ -743,7 +743,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.reset(0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['0'] == 1000
@@ -754,7 +754,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.delay(100, 0)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['1'] == 1000
@@ -765,7 +765,7 @@ class TestFromQiskit:
         qc.x(0)
         qc.append(GlobalPhaseGate(np.pi), [])
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         # Global phase has no effect on sampling.
@@ -782,13 +782,13 @@ class TestFromQiskit:
         qc.rx(theta, 0)
 
         with pytest.raises(ValueError, match="not supported"):
-            cudaq_contrib.from_qiskit(qc)
+            cudaq_convert.from_qiskit(qc)
 
     def test_empty_circuit(self):
         """Test conversion of empty circuit."""
         qc = QuantumCircuit(2)
 
-        kernel = cudaq_contrib.from_qiskit(qc)
+        kernel = cudaq_convert.from_qiskit(qc)
         counts = cudaq.sample(kernel)
 
         assert counts['00'] == 1000

@@ -12,12 +12,12 @@ Two scenarios:
 1. ``TestQasmToQiskitToCudaq`` — an OpenQASM 2.0 source is loaded with
    the native parser provided by Qiskit, and the resulting
    ``QuantumCircuit`` is converted to a CUDA-Q kernel with
-   ``cudaq_contrib.from_qiskit``.
+   ``cudaq_convert.from_qiskit``.
 
 2. ``TestQiskitToQasmToCudaq`` — a ``QuantumCircuit`` is built with the
    Qiskit builder, written to OpenQASM 2.0 with the native writer
    provided by Qiskit, and parsed into a CUDA-Q kernel with
-   ``cudaq_contrib.from_qasm_str``.
+   ``cudaq_convert.from_qasm_str``.
 
 These tests exercise the interoperability story end-to-end. All bitstring
 expectations follow the big-endian convention used by CUDA-Q (q[0] is the
@@ -34,7 +34,7 @@ qiskit = pytest.importorskip("qiskit")
 from qiskit import QuantumCircuit
 
 import cudaq
-from cudaq_contrib import from_qasm_str, from_qiskit
+from cudaq_convert import from_qasm_str, from_qiskit
 
 # --------------------------------------------------------------------------- #
 # Qiskit API compatibility shims (`qasm2.loads` / `qasm2.dumps` preferred;

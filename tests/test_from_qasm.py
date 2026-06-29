@@ -7,7 +7,7 @@
 # ============================================================================ #
 """Tests for the native OpenQASM 2.0 / 3.0 → CUDA-Q translator.
 
-These tests exercise `cudaq_contrib.from_qasm_str` (and `from_qasm` for the
+These tests exercise `cudaq_convert.from_qasm_str` (and `from_qasm` for the
 file-based entry point). The native parser has no Qiskit dependency.
 """
 
@@ -18,8 +18,8 @@ import textwrap
 import pytest
 
 import cudaq
-from cudaq_contrib import from_qasm, from_qasm_str
-from cudaq_contrib.qasm_convert import _eval_expr
+from cudaq_convert import from_qasm, from_qasm_str
+from cudaq_convert.qasm_convert import _eval_expr
 
 HEADER_2 = 'OPENQASM 2.0;\ninclude "qelib1.inc";\n'
 
