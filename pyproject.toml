@@ -3,7 +3,7 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cudaq-contrib"
+name = "cudaq-convert"
 version = "0.1.0"
 description = "OpenQASM 2.0/3.0 and Qiskit interoperability for CUDA-Q, distributed independently of the core repo."
 readme = "README.md"
@@ -18,7 +18,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
 ]
 dependencies = [
-    "cuda-quantum",
+    "cudaq",
 ]
 
 [project.optional-dependencies]
@@ -27,11 +27,11 @@ qiskit = ["qiskit>=1.0"]
 test = ["pytest", "numpy", "qiskit>=1.0"]
 
 [project.urls]
-Homepage = "https://github.com/QuantumRaul/cudaq-contrib"
-Issues = "https://github.com/QuantumRaul/cudaq-contrib/issues"
+Homepage = "https://github.com/QuantumRaul/cudaq-convert"
+Issues = "https://github.com/QuantumRaul/cudaq-convert/issues"
 
 [tool.setuptools]
-packages = ["cudaq_contrib"]
+packages = ["cudaq_convert"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
