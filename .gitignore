@@ -58,6 +58,7 @@ compile_commands.json
 **/*.dat
 **/.antlr
 __pycache__/
+.pytest_cache/
 
 # IDE files
 .vscode/*
@@ -103,3 +104,11 @@ apps/
 
 # Aspell (pyspelling pre-commit hook)
 dictionary.dic
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Local reference clone of the cudaq-community org repo (not part of this project)
+community/

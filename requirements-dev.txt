@@ -1,0 +1,27 @@
+# Development / testing requirements for cudaq-convert.
+#
+# Installs everything needed to run the full test suite from a Linux/WSL shell.
+# CUDA-Q ships Linux wheels only, so the test suite cannot run on bare Windows;
+# use this from WSL (or any Linux environment).
+#
+#   python -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements-dev.txt
+#   pip install -e .            # install cudaq-convert itself (editable)
+#
+# Then run the tests. On a CPU-only / no-GPU machine you MUST force the CPU
+# simulator BEFORE importing cudaq, otherwise `import cudaq` aborts trying to
+# initialize a GPU context:
+#
+#   export CUDAQ_DEFAULT_SIMULATOR=qpp-cpu
+#   pytest -q
+
+# --- runtime dependencies (the only CUDA-Q surface used is the public API) ---
+# Keep the `cudaq` floor identical to pyproject.toml — tests/test_cudaq_compat.py
+# checks the installed version against what the package declares.
+cudaq>=0.14.2
+numpy
+qiskit>=1.0
+
+# --- test dependencies ---
+pytest
+packaging

@@ -10,9 +10,6 @@
 This module provides interoperability between Qiskit and CUDA-Q,
 allowing users to convert Qiskit `QuantumCircuit` objects into CUDA-Q
 kernels for simulation and execution.
-
-Note:
-    This module requires ``qiskit`` to be installed.
 """
 
 import numpy as np
@@ -32,8 +29,10 @@ def _try_import_qiskit():
     try:
         from qiskit import QuantumCircuit
     except ImportError as e:
-        raise ImportError("This feature requires Qiskit. "
-                          "Install it with: `pip install qiskit`") from e
+        raise ImportError(
+            "Qiskit is a required dependency of cudaq-convert but could not "
+            "be imported. Repair the installation with: "
+            "`pip install --force-reinstall cudaq-convert`") from e
     return QuantumCircuit
 
 

@@ -29,8 +29,6 @@ import textwrap
 
 import pytest
 
-qiskit = pytest.importorskip("qiskit")
-
 from qiskit import QuantumCircuit
 
 import cudaq

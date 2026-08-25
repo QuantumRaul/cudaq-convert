@@ -1,0 +1,57 @@
+# CI for cudaq-convert — based on GitHub's default "Python package" workflow.
+# Runs the test suite on every push and pull request to main.
+#
+# CUDA-Q ships Linux wheels only, so CI runs on ubuntu-latest across the
+# supported Python versions. The CPU simulator is forced via
+# CUDAQ_DEFAULT_SIMULATOR so `import cudaq` does not try to initialize a GPU
+# context on the (GPU-less) hosted runners.
+
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    env:
+      CUDAQ_DEFAULT_SIMULATOR: qpp-cpu
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Runtime deps (numpy, qiskit) are declared in pyproject.toml, but the
+          # install below uses --no-deps, so install them explicitly here along
+          # with the lint/test tooling.
+          python -m pip install flake8 pytest packaging numpy "qiskit>=1.0"
+          # The `cudaq` meta-package resolves to one of the `cuda-quantum-cu*`
+          # wheels by autodetecting the host CUDA; the hosted runners have none,
+          # so install the cu12 wheel directly (it bundles the CPU simulator and
+          # needs no GPU). Keep this floor in step with `cudaq` in pyproject.toml
+          # — tests/test_cudaq_compat.py checks the installed version against it.
+          python -m pip install "cuda-quantum-cu12>=0.14.2"
+          python -m pip install -e . --no-deps
+
+      - name: Lint (syntax errors / undefined names)
+        run: |
+          flake8 cudaq_convert --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Test with pytest
+        run: |
+          pytest -q

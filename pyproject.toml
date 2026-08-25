@@ -7,7 +7,9 @@ name = "cudaq-convert"
 version = "0.1.0"
 description = "OpenQASM 2.0/3.0 and Qiskit interoperability for CUDA-Q, distributed independently of the core repo."
 readme = "README.md"
-requires-python = ">=3.10"
+# Follows CUDA-Q: `cudaq` 0.14.2 dropped Python 3.10, and its wheels are built
+# for cp311/cp312/cp313.
+requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Raul Martinez", email = "raul.martinez@itecam.com" }]
 keywords = ["cuda-quantum", "cudaq", "openqasm", "qasm", "qiskit", "quantum"]
@@ -15,16 +17,30 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Physics",
 ]
+# Everything needed for both conversion paths. `cudaq-convert` is distributed
+# independently of CUDA-Q, so it declares its full runtime surface: `cudaq` for
+# `make_kernel`, `numpy` for the shared gate-handler table, and `qiskit` for
+# `from_qiskit`. A single `pip install cudaq-convert` gives you the OpenQASM
+# parser and the Qiskit converter — no extras to remember.
 dependencies = [
-    "cudaq",
+    # Minimum supported CUDA-Q: 0.14.2, the first release to require
+    # Python >= 3.11, which keeps `requires-python` above self-consistent.
+    # `tests/test_cudaq_compat.py` is what verifies a given CUDA-Q actually
+    # works, since `make_kernel` is the whole integration surface.
+    "cudaq>=0.14.2",
+    "numpy",
+    "qiskit>=1.0",
 ]
 
 [project.optional-dependencies]
-# Qiskit is only needed for `from_qiskit`; the OpenQASM path is dependency-free.
-qiskit = ["qiskit>=1.0"]
-test = ["pytest", "numpy", "qiskit>=1.0"]
+# `packaging` lets tests/test_cudaq_compat.py read the range declared above and
+# check it against the CUDA-Q that is actually installed.
+test = ["pytest", "packaging"]
 
 [project.urls]
 Homepage = "https://github.com/QuantumRaul/cudaq-convert"

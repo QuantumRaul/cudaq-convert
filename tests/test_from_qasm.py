@@ -8,7 +8,7 @@
 """Tests for the native OpenQASM 2.0 / 3.0 → CUDA-Q translator.
 
 These tests exercise `cudaq_convert.from_qasm_str` (and `from_qasm` for the
-file-based entry point). The native parser has no Qiskit dependency.
+file-based entry point). The native parser does not route through Qiskit.
 """
 
 import os

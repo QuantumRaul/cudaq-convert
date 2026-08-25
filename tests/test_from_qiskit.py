@@ -15,8 +15,6 @@ import numpy as np
 import cudaq
 import cudaq_convert
 
-# Skip all tests if `qiskit` is not installed
-qiskit = pytest.importorskip("qiskit")
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
 from qiskit.circuit.library import (
