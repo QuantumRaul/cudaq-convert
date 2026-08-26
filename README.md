@@ -39,7 +39,8 @@ This installs everything both conversion paths need, so `from_qasm`,
 CUDA-Q 0.14.2 is the first release to require Python 3.11, which is where the
 floor comes from. The integration surface is narrow — `make_kernel` and the
 builder methods the translators drive — and
-[tests/test_cudaq_compat.py](tests/test_cudaq_compat.py) pins it down: it checks
+[tests/test_cudaq_compat.py](https://github.com/QuantumRaul/cudaq-convert/blob/main/tests/test_cudaq_compat.py)
+pins it down: it checks
 the installed CUDA-Q against what the package declares, asserts every builder
 method still exists, and runs a Bell state end to end through each entry point.
 Run it after a CUDA-Q upgrade to confirm the surface still holds.
@@ -95,7 +96,8 @@ kernel = from_qiskit(qc)
   message rather than silently no-op'ing):
   - QASM3 gate modifiers: `ctrl @`, `negctrl @`, `inv @`, `pow(n) @`.
   - Classical control and typed declarations / subroutines (`if`, `for`,
-    `while`, `def`, `input`/`output`, `int`/`float`/`angle`, …).
+    `while`, `def`, `input`/`output`, `int`/`float`/`angle`, …). This includes
+    OpenQASM 2.0's `if (c==N) gate q;`, which is legal 2.0 syntax.
 - **Endianness:** CUDA-Q counts are big-endian (q0 is the leftmost bit) while
   Qiskit is little-endian — reverse the bitstring when comparing across the two.
 - **Phase-only gates** (`rz`, `cz`, `cp`, `s`, `t`, global phase, `gphase`,
@@ -116,15 +118,20 @@ pytest
 
 ## Contributing
 
-Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
+Contributions are welcome — see
+[CONTRIBUTING.md](https://github.com/QuantumRaul/cudaq-convert/blob/main/CONTRIBUTING.md)
+for the
 development setup, test instructions, and coding conventions. By participating
-you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
+you agree to the
+[Code of Conduct](https://github.com/QuantumRaul/cudaq-convert/blob/main/CODE_OF_CONDUCT.md).
 
 ## Security
 
-To report a security vulnerability, follow [SECURITY.md](SECURITY.md). **Do not**
+To report a security vulnerability, follow
+[SECURITY.md](https://github.com/QuantumRaul/cudaq-convert/blob/main/SECURITY.md). **Do not**
 open a public GitHub issue for security reports.
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE).
+Apache License 2.0 — see
+[LICENSE](https://github.com/QuantumRaul/cudaq-convert/blob/main/LICENSE).
