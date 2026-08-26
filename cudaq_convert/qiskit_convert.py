@@ -340,8 +340,20 @@ def _apply_instruction(kernel, qs, operation):
     """
     try:
         params = [float(p) for p in operation.params]
-    except (TypeError, ValueError):
-        # Unbound `ParameterExpression` or otherwise non-numeric parameters.
+    except (TypeError, ValueError) as e:
+        # An unbound `Parameter` is worth its own error: the gate itself is
+        # very likely supported, so reporting it as an unsupported gate sends
+        # the caller looking in the wrong place. Anything else non-numeric
+        # falls through to the usual "unsupported" path.
+        libres = sorted(
+            str(name) for p in operation.params
+            for name in getattr(p, 'parameters', ()))
+        if libres:
+            raise ValueError(
+                f"Gate '{operation.name}' has unbound parameters "
+                f"({', '.join(libres)}). CUDA-Q kernels need concrete values, "
+                f"so assign them first, e.g. "
+                f"`circuit.assign_parameters({{...}})`.") from e
         return False
 
     handler = _GATE_HANDLERS.get(operation.name)

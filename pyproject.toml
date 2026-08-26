@@ -1,5 +1,6 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+# setuptools>=77 for PEP 639 (`license` as an SPDX expression + `license-files`).
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,12 +11,15 @@ readme = "README.md"
 # Follows CUDA-Q: `cudaq` 0.14.2 dropped Python 3.10, and its wheels are built
 # for cp311/cp312/cp313.
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 authors = [{ name = "Raul Martinez", email = "raul.martinez@itecam.com" }]
 keywords = ["cuda-quantum", "cudaq", "openqasm", "qasm", "qiskit", "quantum"]
 classifiers = [
+    # No `License ::` classifier: PEP 639 replaces it with the SPDX expression
+    # above, and setuptools warns if both are present.
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
