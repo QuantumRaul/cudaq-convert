@@ -36,15 +36,6 @@ This installs everything both conversion paths need, so `from_qasm`,
 | Python | 3.11 – 3.13 |
 | Qiskit | `>= 1.0` |
 
-CUDA-Q 0.14.2 is the first release to require Python 3.11, which is where the
-floor comes from. The integration surface is narrow — `make_kernel` and the
-builder methods the translators drive — and
-[tests/test_cudaq_compat.py](https://github.com/QuantumRaul/cudaq-convert/blob/main/tests/test_cudaq_compat.py)
-pins it down: it checks
-the installed CUDA-Q against what the package declares, asserts every builder
-method still exists, and runs a Bell state end to end through each entry point.
-Run it after a CUDA-Q upgrade to confirm the surface still holds.
-
 ## Usage
 
 ```python
