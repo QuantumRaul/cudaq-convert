@@ -773,14 +773,19 @@ class TestFromQiskit:
         """Test that unbound parameter expressions raise ValueError.
 
         Gates whose parameters are not concrete floats (e.g., an unbound
-        `Parameter`) cannot be converted and should raise.
+        `Parameter`) cannot be converted and should raise. The message must
+        name the unbound parameter rather than blaming the gate: `rx` is
+        supported, so "gate not supported" would send the caller looking in
+        the wrong place.
         """
         theta = Parameter('theta')
         qc = QuantumCircuit(1)
         qc.rx(theta, 0)
 
-        with pytest.raises(ValueError, match="not supported"):
+        with pytest.raises(ValueError, match="unbound parameters") as excinfo:
             cudaq_convert.from_qiskit(qc)
+        assert 'theta' in str(excinfo.value)
+        assert 'assign_parameters' in str(excinfo.value)
 
     def test_empty_circuit(self):
         """Test conversion of empty circuit."""

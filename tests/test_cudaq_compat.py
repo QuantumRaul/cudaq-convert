@@ -87,7 +87,14 @@ SAMPLE_RESULT_MEMBERS = (
     'expectation',
     'get_marginal_counts',
     'dump',
+    'items',
+    'values',
 )
+
+# Dict methods `SampleResult` does *not* have, verified against CUDA-Q 0.15.1.
+# The docs tell users to reach for `counts.items()` instead, so if one of these
+# ever appears the docs should say so.
+SAMPLE_RESULT_MISSING = ('keys', 'get')
 
 # Distributions that can provide the `cudaq` module. `cudaq` is a meta-package
 # that resolves to one of the concrete wheels at install time; CI installs
@@ -267,6 +274,34 @@ class TestSampleResultApi:
         assert counts.count('1') == 100
         assert counts.probability('1') == pytest.approx(1.0)
         assert counts.most_probable() == '1'
+
+    def test_iterates_over_bitstrings(self, counts):
+        """Iteration yields the observed bitstrings, so `len`/`list` work."""
+        assert len(counts) == 1
+        assert list(counts) == ['1']
+        assert [bs for bs in counts] == ['1']
+        assert list(counts.items()) == [('1', 100)]
+        assert list(counts.values()) == [100]
+
+    @pytest.mark.parametrize('member', SAMPLE_RESULT_MISSING)
+    def test_dict_method_still_absent(self, counts, member):
+        """`SampleResult` is not a dict; the docs name what it lacks.
+
+        A failure here is good news — CUDA-Q gained the method — but the
+        README and CLAUDE.md say it is missing, so update them to match.
+        """
+        assert not hasattr(counts, member), (
+            f'`SampleResult.{member}` now exists; the docs still say it does '
+            f'not. Update them and drop it from SAMPLE_RESULT_MISSING.')
+
+    def test_dict_of_counts_needs_items(self, counts):
+        """`dict(counts)` is a trap: it consumes the bitstrings, not pairs.
+
+        Iteration yields bitstrings, so `dict()` unpacks each one character by
+        character instead of failing — a 2-qubit result silently becomes
+        `{'0': '0', '1': '1'}`. `dict(counts.items())` is the correct form.
+        """
+        assert dict(counts.items()) == {'1': 100}
 
 
 # --------------------------------------------------------------------------- #
