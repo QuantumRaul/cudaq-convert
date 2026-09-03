@@ -1,8 +1,6 @@
 # Code of Conduct
 
-`cudaq-convert` adopts the Code of Conduct of the
-[cudaq-community](https://github.com/cudaq-community) organization. This Code of
-Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
+`cudaq-convert` adapts the Code of Conduct from the [Contributor Covenant][homepage], version 1.4,
 available [here][codeofconduct]. For answers to common questions, see the
 [FAQs][faqs].
 
@@ -66,8 +64,7 @@ further defined and clarified by project maintainers.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported by contacting the project maintainer at
-[raul.martinez@itecam.com](mailto:raul.martinez@itecam.com), or the
-cudaq-community organization at [cudaq@nvidia.com](mailto:cudaq@nvidia.com). All
+[raul.martinez@itecam.com](mailto:raul.martinez@itecam.com). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an
