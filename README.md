@@ -4,17 +4,14 @@ Interoperability helpers for [CUDA-Q](https://github.com/NVIDIA/cuda-quantum):
 convert **OpenQASM 2.0 / 3.0** and **Qiskit** circuits into CUDA-Q kernels.
 
 This package is developed and released **independently** of the core CUDA-Q
-repository. It takes a dependency on `cudaq` and installs on top of it,
-so framework integrations can evolve on their own cadence without coupling to
-CUDA-Q's release cycle.
+repository. It takes a dependency on `cudaq` and installs on top of it.
 
 ## Who is this for
 
 Researchers and developers who already have quantum circuits expressed in
 **OpenQASM 2.0/3.0** or built with **Qiskit** and want to run, simulate, or
 extend them on **CUDA-Q** — without hand-rewriting each circuit as a CUDA-Q
-kernel. Typical uses: porting an existing OpenQASM/Qiskit codebase to CUDA-Q
-simulators and hardware backends, and interoperating between the two ecosystems.
+kernel.
 
 > **Platform:** CUDA-Q ships Linux wheels only, so this package runs on **Linux
 > or WSL** with **Python 3.11–3.13**. It is not importable on bare Windows.
@@ -35,6 +32,7 @@ This installs everything both conversion paths need, so `from_qasm`,
 | CUDA-Q | `cudaq >= 0.14.2` |
 | Python | 3.11 – 3.13 |
 | Qiskit | `>= 1.0` |
+| OpenQASM | 2.0, 3.0 |
 
 ## Usage
 
@@ -42,7 +40,7 @@ This installs everything both conversion paths need, so `from_qasm`,
 import cudaq
 from cudaq_convert import from_qasm, from_qasm_str, from_qiskit
 
-# OpenQASM 2.0 / 3.0 — native pure-Python parser, does not go through Qiskit
+# From a OpenQASM 2.0 / 3.0 string
 kernel = from_qasm_str("""
 OPENQASM 2.0;
 include "qelib1.inc";
@@ -83,18 +81,16 @@ kernel = from_qiskit(qc)
 
 ## Known limitations
 
-- **Not yet implemented** (these raise `NotImplementedError` with a clear
-  message rather than silently no-op'ing):
+- **Not yet implemented** (these raise `NotImplementedError`):
   - QASM3 gate modifiers: `ctrl @`, `negctrl @`, `inv @`, `pow(n) @`.
   - Classical control and typed declarations / subroutines (`if`, `for`,
     `while`, `def`, `input`/`output`, `int`/`float`/`angle`, …). This includes
     OpenQASM 2.0's `if (c==N) gate q;`, which is legal 2.0 syntax.
 - **Endianness:** CUDA-Q counts are big-endian (q0 is the leftmost bit) while
-  Qiskit is little-endian — reverse the bitstring when comparing across the two.
+  Qiskit is little-endian; reverse the bitstring when comparing across the two.
 - **Phase-only gates** (`rz`, `cz`, `cp`, `s`, `t`, global phase, `gphase`,
   `u0`) are unobservable in Z-basis sampling.
 - **Platform:** Linux/WSL only, Python 3.11–3.13 (inherited from CUDA-Q).
-- **CUDA-Q versions:** `cudaq >= 0.14.2` — see [Compatibility](#compatibility).
 
 ## Testing
 
