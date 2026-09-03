@@ -1,8 +1,7 @@
 # Security Policy
 
-`cudaq-convert` is a community project hosted in the
-[cudaq-community](https://github.com/cudaq-community) organization. We take the
-security of the project seriously and appreciate responsible disclosure.
+`cudaq-convert` is a community project. We take the security of the project
+seriously and appreciate responsible disclosure.
 
 **Please do not report security vulnerabilities through public GitHub issues,
 discussions, or pull requests.**
@@ -22,8 +21,6 @@ Please include as much of the following as you can:
 - Proof-of-concept or exploit code, if available
 - The potential impact and how an attacker might exploit it
 
-You can expect an acknowledgement of your report within **5 business days**, and
-a status update on remediation within **30 days**.
 
 ## Escalation to NVIDIA
 
