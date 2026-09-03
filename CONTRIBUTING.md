@@ -2,7 +2,7 @@
 
 Thanks for your interest in improving `cudaq-convert`! This project provides
 OpenQASM 2.0/3.0 and Qiskit → CUDA-Q circuit translation. Contributions of bug
-reports, tests, documentation, and new gate/feature coverage are all welcome.
+reports, tests, documentation, and new gate/feature/sdk coverage are all welcome.
 
 By participating in this project you agree to abide by our
 [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -16,8 +16,7 @@ issues, **do not** open a public issue — follow [SECURITY.md](SECURITY.md).
 
 ## Development setup
 
-CUDA-Q ships Linux wheels only, so develop and test on **Linux or WSL** (the
-package is not importable on bare Windows). Use Python **3.11–3.13** and
+CUDA-Q ships Linux wheels only, so develop and test on **Linux or WSL** . Use Python **3.11–3.13** and
 **`cudaq >= 0.14.2`**.
 
 ```bash
@@ -76,8 +75,7 @@ translators stay in lockstep on gate semantics.
 ## Code style
 
 - **Formatting:** yapf with Google style, matching CUDA-Q conventions.
-- **License header:** keep the Apache-2.0 header on every Python source file
-  (copy it from any existing module).
+- **License header:** keep the Apache-2.0 header on every Python source file.
 - **Unsupported features:** raise `NotImplementedError` with a clear message
   rather than silently no-op'ing (see the QASM3 gate modifiers). Do not silently
   drop instructions.
